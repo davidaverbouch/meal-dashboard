@@ -1,0 +1,12 @@
+.NavbarWrapper {
+    display: flex;
+    z-index: 20000 !important;
+}
+
+.Navbar_toolbar {
+    display: flex;
+}
+
+.NavbarWrapper .centralArea {
+    flex: 1;
+}
