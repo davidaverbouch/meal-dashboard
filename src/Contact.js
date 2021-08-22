@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { TextField, Button, Dialog, DialogTitle, DialogContent, DialogContentText, Slide } from '@material-ui/core';
-import { useSelector, useDispatch } from 'react-redux';
+import { TextField, Button, Dialog, DialogTitle, DialogContent, Slide } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
 import { storeMsg } from './MealslistContainerSlice';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -35,9 +35,9 @@ export default function Contact(props) {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        console.log("ouverture de la page contact - componentDidMount")
+        // console.log("ouverture de la page contact - componentDidMount")
         return () => {
-            console.log("fermeture de la page contact - componentWillUnmount")
+            // console.log("fermeture de la page contact - componentWillUnmount")
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -67,12 +67,10 @@ export default function Contact(props) {
             <Dialog open={openModal} TransitionComponent={Transition} keepMounted onClose={() => setOpenModal(false)} >
                 <DialogTitle>{nameValue}</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
-                        <p style={{ fontWeight: '700', fontSize: '.75em' }}>E-mail :</p>
-                        <p style={{ color: '#999', fontSize: '.75em' }}>{emailValue}</p>
-                        <p style={{ fontWeight: '700', fontSize: '.75em' }}>Content of message :</p>
-                        <p>{msgValue}</p>
-                    </DialogContentText>
+                    <div style={{ fontWeight: '700', fontSize: '.75em' }}>E-mail :</div>
+                    <div style={{ color: '#999', fontSize: '.75em' }}>{emailValue}</div>
+                    <div style={{ fontWeight: '700', fontSize: '.75em' }}>Content of message :</div>
+                    <div>{msgValue}</div>
                 </DialogContent>
             </Dialog>
         </ContactBloc>

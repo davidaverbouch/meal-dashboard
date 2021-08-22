@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-} from "react-router-dom";
+import { Link } from "react-router-dom";
 import { TextField, IconButton, Radio, FormControlLabel, RadioGroup, MenuItem, Select, FormControl, InputLabel } from '@material-ui/core';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
 import axios from 'axios';
-import { whileStatement } from '@babel/types';
 
 // not a array, I choose a list to symplify the responsive display
 // when I make a array, I switch on mobile with a list of card
@@ -123,9 +117,9 @@ export default function Mealslist(props) {
     // The filter search on Meal name, Area and Tags. Every time in lowercase without space (to search with space, I must split search sentence for each space in array but not the exercise and time to do this)
 
     useEffect(() => {
-        console.log("ouverture de la page d acceuil - componentDidMount")
+        // console.log("ouverture de la page d acceuil - componentDidMount")
         return () => {
-            console.log("fermeture de la page d acceuil - componentWillUnmount")
+            // console.log("fermeture de la page d acceuil - componentWillUnmount")
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])

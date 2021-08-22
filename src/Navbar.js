@@ -12,9 +12,9 @@ import './Navbar.css';
 function Navbar(props) {
     // const [isOnline, setIsOnline] = useState(null);
     useEffect(() => {
-        console.log("ouverture de la navbar - componentDidMount")
+        // console.log("ouverture de la navbar - componentDidMount")
         return () => {
-            console.log("fermeture de la navbar - componentWillUnmount")
+            // console.log("fermeture de la navbar - componentWillUnmount")
         };
     });
 

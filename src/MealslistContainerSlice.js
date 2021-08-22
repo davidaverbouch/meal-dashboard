@@ -1,23 +1,9 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   rawData: [],
   msgList: []
 };
-
-export function fetchCount(amount = 1) {
-  return new Promise((resolve) =>
-    setTimeout(() => resolve({ data: amount }), 500)
-  );
-}
-
-export const incrementAsync = createAsyncThunk(
-  'mealsList/fetchCount',
-  async (amount) => {
-    const response = await fetchCount(amount);
-    return response.data;
-  }
-);
 
 export const MealslistContainerSlice = createSlice({
   name: 'mealsList',

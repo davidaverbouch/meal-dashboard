@@ -36,13 +36,7 @@ export default function MealslistContainer(props) {
     }
 
     useEffect(() => {
-        console.log("ouverture de la page d acceuil - componentDidMount");
-
         if (mealsList.length === 0) getListOfMeal();
-
-        return () => {
-            console.log("fermeture de la page d acceuil - componentWillUnmount")
-        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 

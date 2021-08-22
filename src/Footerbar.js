@@ -19,9 +19,9 @@ const FooterBarStyled = styled.div`
 function FooterBar(props) {
     // const [isOnline, setIsOnline] = useState(null);
     useEffect(() => {
-        console.log("ouverture de la footerbar - componentDidMount")
+        // console.log("ouverture de la footerbar - componentDidMount")
         return () => {
-            console.log("fermeture de la footerbar - componentWillUnmount")
+            // console.log("fermeture de la footerbar - componentWillUnmount")
         };
     });
 

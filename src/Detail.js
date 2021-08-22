@@ -2,11 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { getDetail, addData } from './MealslistContainerSlice';
-import {
-    BrowserRouter as Router,
-    Link,
-    useLocation
-} from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import axios from 'axios';
 
 const Item = styled.div`
@@ -116,7 +112,7 @@ export default function Detail(props) {
     let mealsList = useSelector(state => getDetail(state, query.get("id")));
 
     useEffect(() => {
-        console.log("ouverture de la page detail - componentDidMount")
+        // console.log("ouverture de la page detail - componentDidMount")
         // If meal not present in list, add this meal to list (be carefull, action is addData (not addDatas that is add a array))
         if (!mealsList) {
             axios.get('https://www.themealdb.com/api/json/v1/1/lookup.php?i=' + query.get("id"))
@@ -128,7 +124,7 @@ export default function Detail(props) {
                 })
         }
         return () => {
-            console.log("fermeture de la page detail - componentWillUnmount")
+            // console.log("fermeture de la page detail - componentWillUnmount")
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -154,7 +150,7 @@ export default function Detail(props) {
                 <ItemContentCenter>{mealsList.strCategory}</ItemContentCenter>
                 <ItemContentCenter>
                     {getIngredientNMesure().map((val, idx) => {
-                        return <ItemContentIngredient>{val}</ItemContentIngredient>
+                        return <ItemContentIngredient key={idx}>{val}</ItemContentIngredient>
                     })}
 
                 </ItemContentCenter>
