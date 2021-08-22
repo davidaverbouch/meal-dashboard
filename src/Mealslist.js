@@ -9,6 +9,9 @@ import {
 import { TextField, IconButton, Radio, FormControlLabel, RadioGroup, MenuItem, Select, FormControl, InputLabel } from '@material-ui/core';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
+import axios from 'axios';
+import { whileStatement } from '@babel/types';
+
 // not a array, I choose a list to symplify the responsive display
 // when I make a array, I switch on mobile with a list of card
 // but I don't have time to make this (with search, sort, pagination)
@@ -33,6 +36,7 @@ const Item = styled.div`
   cursor: pointer;
   min-width: 250px;
   max-width: 400px;
+  background: white;
   border-radius: 3px;
   align-items: center;
   border: 1px solid #fafafa;
@@ -42,6 +46,7 @@ const Item = styled.div`
 const Logo = styled.img`
   display: flex;
   max-width: 64px;
+  align-self: center;
 `;
 
 const ItemContent = styled.div`
@@ -59,6 +64,7 @@ const ItemContentTitle = styled.div`
   padding: 0 0 .5em;
   color: #333;
   font-weight: 700;
+  text-align: left;
   flex-wrap: wrap;
 `;
 
@@ -113,6 +119,7 @@ export default function Mealslist(props) {
     const [pagination, setPagination] = useState(0);
     const [paginationIdx, setPaginationIdx] = useState(0);
     const [searchValue, setSearchValue] = useState('');
+    const [searchResult, setSearchResult] = useState([]);
     // The filter search on Meal name, Area and Tags. Every time in lowercase without space (to search with space, I must split search sentence for each space in array but not the exercise and time to do this)
 
     useEffect(() => {
@@ -122,6 +129,19 @@ export default function Mealslist(props) {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    useEffect(() => {
+        if (searchValue === '') setSearchResult([])
+        else axios.get('https://www.themealdb.com/api/json/v1/1/search.php?s=' + searchValue).then((response) => setSearchResult(response.data.meals)).catch((error) => console.log(error))
+    }, [searchValue])
+
+    const getIngredientNMesure = (mealsItem) => {
+        let res = 0
+        for (let i = 0; i <= 20; i++) {
+            if (mealsItem["strIngredient" + i] && mealsItem["strIngredient" + i] !== "") res++;
+        }
+        return res
+    }
 
     return (
         <>
@@ -146,6 +166,21 @@ export default function Mealslist(props) {
                 </RadioGroup>
             </div>}
             <ListItems>
+                {searchResult && searchResult.length > 0 && <div style={{ width: '100%', border: '1px solid #3f51b5', background: '#3f51b5', color: 'white', padding: '1.5em 2.5em', textAlign: 'center', display: 'flex', flexWrap: 'wrap' }}>
+                    <h2 style={{ width: '100%' }}>Search on API</h2>
+                    {searchResult.map((val, idx) => {
+                        return <Item key={idx}>
+                            <Link to={"/detail?id=" + val.idMeal} style={{ display: 'flex', flex: 1 }}>
+                                <Logo src={val.strMealThumb} alt="thumbnail of meals" />
+                                <ItemContent>
+                                    <ItemContentTitle>{val.strMeal}</ItemContentTitle>
+                                    <ItemContentOrigin>Origine : {val.strArea} </ItemContentOrigin>
+                                    <ItemContentTag>{val.strTags}</ItemContentTag>
+                                </ItemContent>
+                            </Link>
+                        </Item>
+                    })}
+                </div>}
                 {props.datas.filter(obj => {
                     if (searchValue !== '') {
                         if ((obj.strMeal && obj.strMeal.toLowerCase().includes(searchValue.toLowerCase())) ||
@@ -168,6 +203,7 @@ export default function Mealslist(props) {
                             <ItemContent>
                                 <ItemContentTitle>{val.strMeal}</ItemContentTitle>
                                 <ItemContentOrigin>Origine : {val.strArea} </ItemContentOrigin>
+                                <ItemContentOrigin>{getIngredientNMesure(val)} Ingredients</ItemContentOrigin>
                                 <ItemContentTag>{val.strTags}</ItemContentTag>
                             </ItemContent>
                         </Link>

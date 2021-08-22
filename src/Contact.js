@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { TextField, Button } from '@material-ui/core';
+import { TextField, Button, Dialog, DialogTitle, DialogContent, DialogContentText, Slide } from '@material-ui/core';
+import { useSelector, useDispatch } from 'react-redux';
+import { storeMsg } from './MealslistContainerSlice';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const ContactBloc = styled.div`
   margin: 1em auto;
@@ -24,6 +30,10 @@ export default function Contact(props) {
     const [emailValueError, setEmailValueError] = useState(false);
     const [msgValueError, setMsgValueError] = useState(false);
 
+    const [openModal, setOpenModal] = React.useState(false);
+
+    const dispatch = useDispatch();
+
     useEffect(() => {
         console.log("ouverture de la page contact - componentDidMount")
         return () => {
@@ -39,7 +49,11 @@ export default function Contact(props) {
         setMsgValueError(msgValue === '')
 
         if (nameValueError || emailValueError || msgValueError) console.log('error')
-        else console.log('yes')
+        else {
+            // I don't understand why use redux here, maybe just for the test, I use the action
+            dispatch(storeMsg({ nameValue, emailValue, msgValue }))
+            setOpenModal(true)
+        }
     }
 
     return (
@@ -49,6 +63,18 @@ export default function Contact(props) {
             <TextField error={emailValueError} value={emailValue} onChange={(e) => { setEmailValueError(false); setEmailValue(e.target.value) }} placeholder="Your email" label="Your email" style={{ marginTop: '1em' }} />
             <TextField error={msgValueError} value={msgValue} onChange={(e) => { setMsgValueError(false); setMsgValue(e.target.value) }} placeholder="Your message on multi lines" label="Your message" multiline style={{ marginTop: '1em' }} />
             <Button style={{ marginTop: '1em' }} onClick={sendContact}>Submit</Button>
+
+            <Dialog open={openModal} TransitionComponent={Transition} keepMounted onClose={() => setOpenModal(false)} >
+                <DialogTitle>{nameValue}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        <p style={{ fontWeight: '700', fontSize: '.75em' }}>E-mail :</p>
+                        <p style={{ color: '#999', fontSize: '.75em' }}>{emailValue}</p>
+                        <p style={{ fontWeight: '700', fontSize: '.75em' }}>Content of message :</p>
+                        <p>{msgValue}</p>
+                    </DialogContentText>
+                </DialogContent>
+            </Dialog>
         </ContactBloc>
     );
 }

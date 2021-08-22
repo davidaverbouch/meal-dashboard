@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
-import { getDetail } from './MealslistContainerSlice';
+import { getDetail, addData } from './MealslistContainerSlice';
 import {
     BrowserRouter as Router,
     Link,
     useLocation
 } from "react-router-dom";
+import axios from 'axios';
 
 const Item = styled.div`
   flex: 1;
@@ -110,13 +111,22 @@ function useQuery() {
 
 export default function Detail(props) {
 
+    const dispatch = useDispatch();
     let query = useQuery();
-    const mealsList = useSelector(state => getDetail(state, query.get("id")));
+    let mealsList = useSelector(state => getDetail(state, query.get("id")));
 
     useEffect(() => {
         console.log("ouverture de la page detail - componentDidMount")
-        // I made this cause data load on root page and I can't pass so much time for this, it's not the exercise
-        if (!mealsList) window.location.href = '/';
+        // If meal not present in list, add this meal to list (be carefull, action is addData (not addDatas that is add a array))
+        if (!mealsList) {
+            axios.get('https://www.themealdb.com/api/json/v1/1/lookup.php?i=' + query.get("id"))
+                .then(function (response) {
+                    dispatch(addData(response.data.meals[0]))
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
         return () => {
             console.log("fermeture de la page detail - componentWillUnmount")
         };
